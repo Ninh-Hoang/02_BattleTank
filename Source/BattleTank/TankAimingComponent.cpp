@@ -1,6 +1,7 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "TankAimingComponent.h"
+#include "TankBarrel.h"
 
 #define OUT
 
@@ -14,7 +15,7 @@ UTankAimingComponent::UTankAimingComponent()
 	// ...
 }
 
-void UTankAimingComponent::SetBarrelReference(UStaticMeshComponent* BarrelToSet) {
+void UTankAimingComponent::SetBarrelReference(UTankBarrel* BarrelToSet) {
 	Barrel = BarrelToSet;
 }
 
@@ -40,20 +41,31 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed) {
 	if (!Barrel) { return; }
 	FVector LaunchVelocity = FVector(0);
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
-
-
-	if (UGameplayStatics::SuggestProjectileVelocity(
+	bool bHaveAimSolution = UGameplayStatics::SuggestProjectileVelocity(
 		this,
 		OUT LaunchVelocity,
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
-		0,
-		0,
-		ESuggestProjVelocityTraceOption::DoNotTrace)) {	
+		ESuggestProjVelocityTraceOption::DoNotTrace);
+
+	if (bHaveAimSolution){
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		UE_LOG(LogTemp, Warning, TEXT("%s aims at the direction of %s"), *GetOwner()->GetName(), *AimDirection.ToString());
+		MoveBarrel(AimDirection);
+		//UE_LOG(LogTemp, Warning, TEXT("%s aims at the direction of %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 	}
+}
+
+void UTankAimingComponent::MoveBarrel(FVector AimDirection){
+	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
+	FRotator AimAsRotator = AimDirection.Rotation();
+	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
+	//UE_LOG(LogTemp, Warning, TEXT(" AimAsRotator: %s"), *AimAsRotator.ToString());
+
+	Barrel->Elevate(5);
+}
+
+void UTankAimingComponent::MoveTurret(FVector AimDirection){
 }
 
 
