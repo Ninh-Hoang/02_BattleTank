@@ -8,6 +8,7 @@
 
 class UTankAimingComponent;
 class UTankBarrel;
+class UTankTurret;
 
 UCLASS()
 class BATTLETANK_API ATank : public APawn
@@ -19,7 +20,10 @@ public:
 	ATank();
 
 	UFUNCTION (BlueprintCallable, Category = Setup)
-	void SetBarrelRefernce(UTankBarrel* Barrel);
+	void SetBarrelRefernce(UTankBarrel* BarrelToSet);
+
+	UFUNCTION (BlueprintCallable, Category = Setup)
+	void SetTurretReference(UTankTurret* TurretToSet);
 
 protected:
 	// Called when the game starts or when spawned
