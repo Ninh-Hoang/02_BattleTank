@@ -4,6 +4,8 @@
 #include "Tank.h"
 #include "TankPlayerController.h"
 
+class ATank;
+
 void ATankAIController::BeginPlay() {
 	Super::BeginPlay();
 	ATank* tank = GetTank();

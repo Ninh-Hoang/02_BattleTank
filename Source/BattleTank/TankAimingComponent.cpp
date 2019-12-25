@@ -5,6 +5,7 @@
 
 #define OUT
 
+
 // Sets default values for this component's properties
 UTankAimingComponent::UTankAimingComponent()
 {
@@ -66,9 +67,8 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection){
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimAsRotator = AimDirection.Rotation();
 	FRotator DeltaRotator = AimAsRotator - BarrelRotator;
-	//UE_LOG(LogTemp, Warning, TEXT(" AimAsRotator: %s"), *AimAsRotator.ToString());
 
-	Barrel->Elevate(5);
+	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
 void UTankAimingComponent::MoveTurret(FVector AimDirection){

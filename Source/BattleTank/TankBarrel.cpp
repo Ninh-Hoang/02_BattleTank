@@ -3,8 +3,10 @@
 
 #include "TankBarrel.h"
 
-void UTankBarrel::Elevate(float DegreePerSecond) {
-	//move Barrel the right amount per frame
-	//give a max elevation speed and the frame time
-	//UE_LOG(LogTemp, Warning, TEXT("Elevating %f degree"), DegreePerSecond);
+void UTankBarrel::Elevate(float RelativeSpeed) {
+	RelativeSpeed = FMath::Clamp<float>(RelativeSpeed, -1, 1);
+	float ElevationChange = RelativeSpeed * MaxDegreePerSecond * GetWorld()->GetDeltaSeconds();
+	float RawNewElevation = RelativeRotation.Pitch + ElevationChange;
+	float Elevation = FMath::Clamp(RawNewElevation, MinElevation, MaxElevation);
+	SetRelativeRotation(FRotator(Elevation,0,0));
 }
