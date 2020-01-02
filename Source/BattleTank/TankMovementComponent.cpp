@@ -12,9 +12,15 @@ void UTankMovementComponent::BeginPlay() {
 }
 
 void UTankMovementComponent::IntentMoveForward(float Throw) {
-    UE_LOG(LogTemp, Warning, TEXT("Intend move forward: %f"), Throw);
+    if (!LeftTrack || !RightTrack) { return; }
     LeftTrack->SetThrottle(Throw);
     RightTrack->SetThrottle(Throw);
+}
+
+void UTankMovementComponent::IntentTurnRight(float Throw) {
+    if (!LeftTrack || !RightTrack) { return; }
+    LeftTrack->SetThrottle(Throw);
+    RightTrack->SetThrottle(-Throw);
 }
 
 void UTankMovementComponent::Initialize(UTankTrack* LeftTrackToSet, UTankTrack* RightTrackToSet) {
