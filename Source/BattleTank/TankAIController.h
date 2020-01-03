@@ -19,9 +19,10 @@ class BATTLETANK_API ATankAIController : public AAIController
 	GENERATED_BODY()
 	
 private:
+	//how close the AI tank auto move to player
+	float AcceptanceRadius = 3000;
 	
 	void BeginPlay() override;
 
 	void Tick(float DeltaTime) override;
-
 };
