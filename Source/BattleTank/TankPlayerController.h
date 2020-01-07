@@ -28,6 +28,7 @@ private:
     UPROPERTY(EditAnywhere)
     float LineTraceRange = 1000000.;
 
+    UFUNCTION(BlueprintCallable, Category = "Setup")
     ATank* GetControlledTank() const;
 
     void BeginPlay() override;
