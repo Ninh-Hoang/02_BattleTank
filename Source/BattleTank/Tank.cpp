@@ -32,3 +32,5 @@ void ATank::Fire()
 		LastFireTime = FPlatformTime::Seconds();
 	}
 }
+
+
