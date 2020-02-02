@@ -12,7 +12,7 @@ class UTankTurret;
 class AProjectile;
 class UTankMovementComponent;
 
-UCLASS()
+UCLASS()	
 class BATTLETANK_API ATank : public APawn
 {
 	GENERATED_BODY()
@@ -32,10 +32,6 @@ public:
 protected:
 	UPROPERTY(BlueprintReadOnly)
 	UTankAimingComponent* TankAimingComponent = nullptr;
-
-	UPROPERTY(BlueprintReadOnly)
-	UTankMovementComponent* TankMovementComponent = nullptr;
-
 private:
 
 	UPROPERTY(EditDefaultsOnly, Category = Firing)
