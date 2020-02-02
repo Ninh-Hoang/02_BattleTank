@@ -11,7 +11,9 @@
 
 class UTankBarrel; //forward decoration
 class UTankTurret;
+class UTankBarrel;
 class UTankAimingComponent;
+class AProjectile;
 
 UENUM()
 enum class EFiringState : uint8 {
@@ -42,6 +44,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float ReloadTime = 3.;
 
+	UPROPERTY(EditAnywhere, Category = Setup)
+	TSubclassOf<AProjectile> ProjectileBlueprint;
+
 	double LastFireTime = 0;
 
 public:	
@@ -54,6 +59,9 @@ public:
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	void AimAt(FVector HitLocation);
+
+	UFUNCTION(BlueprintCallable, Category = Action)
+	void Fire();
 
 	void MoveBarrel(FVector AimDirection);
 
