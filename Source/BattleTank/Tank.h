@@ -49,5 +49,7 @@ private:
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	virtual void BeginPlay() override;
+
 	UTankBarrel* Barrel = nullptr; //TODO remove
 };
