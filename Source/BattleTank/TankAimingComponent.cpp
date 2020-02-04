@@ -38,6 +38,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	// ...
+	UE_LOG(LogTemp, Warning, TEXT("Ticking"));
 }
 
 void UTankAimingComponent::AimAt(FVector HitLocation) {
@@ -74,8 +75,7 @@ void UTankAimingComponent::MoveBarrel(FVector AimDirection){
 	Turret->Rotate(DeltaRotator.Yaw);
 }
 
-void UTankAimingComponent::MoveTurret(FVector AimDirection)
-{
+void UTankAimingComponent::MoveTurret(FVector AimDirection){
 }
 
 void UTankAimingComponent::Fire()
