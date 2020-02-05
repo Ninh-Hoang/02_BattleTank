@@ -29,7 +29,7 @@ void UTankAimingComponent::BeginPlay()
 	Super::BeginPlay();
 
 	//initialize LastFireTime
-	LastFireTime = FPlatformTime::Seconds();
+	LastFireTime = GetWorld()->GetTimeSeconds();
 	AimDirection = FVector(0);
 }
 
@@ -39,7 +39,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	// ...
-	if(FPlatformTime::Seconds() - LastFireTime < ReloadTime) {
+	if(GetWorld()->GetTimeSeconds() - LastFireTime < ReloadTime) {
 		FiringState = EFiringState::Reloading;
 	}
 	else if (IsBarrelMoving()) {
@@ -65,7 +65,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 		StartLocation,
 		HitLocation,
 		LaunchSpeed,
-		false,
+		true,
 		0,
 		0,
 		ESuggestProjVelocityTraceOption::DoNotTrace); //comment this line to produce bugs
@@ -94,7 +94,7 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection){
 
 void UTankAimingComponent::Fire()
 {
-	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
+	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTime;
 
 	if (FiringState != EFiringState::Reloading) {
 		if (!ensure(Barrel)) { return; }
@@ -105,7 +105,7 @@ void UTankAimingComponent::Fire()
 			Barrel->GetSocketRotation(FName("Projectile"))
 			);
 		Projectile->LaunchProjectile(LaunchSpeed);
-		LastFireTime = FPlatformTime::Seconds();
+		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 }
 
