@@ -28,8 +28,9 @@ void UTankAimingComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// ...
-	
+	//initialize LastFireTime
+	LastFireTime = FPlatformTime::Seconds();
+	AimDirection = FVector(0);
 }
 
 
@@ -38,9 +39,22 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	// ...
-	UE_LOG(LogTemp, Warning, TEXT("Ticking"));
+	if(FPlatformTime::Seconds() - LastFireTime < ReloadTime) {
+		FiringState = EFiringState::Reloading;
+	}
+	else if (IsBarrelMoving()) {
+		FiringState = EFiringState::Aiming;
+	}
+	else {
+		FiringState = EFiringState::Locked;
+	}
 }
 
+bool UTankAimingComponent::IsBarrelMoving() {
+	if (!ensure(Barrel)) { return false; }
+	auto BarrelForward = Barrel->GetForwardVector().GetSafeNormal();
+	return !BarrelForward.FVector::Equals(AimDirection, 0.1);
+}
 void UTankAimingComponent::AimAt(FVector HitLocation) {
 	if (!ensure(Barrel) || !ensure(Turret)) { return; }
 	FVector LaunchVelocity = FVector(0);
@@ -57,7 +71,7 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 		ESuggestProjVelocityTraceOption::DoNotTrace); //comment this line to produce bugs
 
 	if (bHaveAimSolution){
-		FVector AimDirection = LaunchVelocity.GetSafeNormal();
+		AimDirection = LaunchVelocity.GetSafeNormal();
 		MoveBarrel(AimDirection);
 		//UE_LOG(LogTemp, Warning, TEXT("%s aims at the direction of %s"), *GetOwner()->GetName(), *AimDirection.ToString());
 	}
@@ -80,10 +94,11 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection){
 
 void UTankAimingComponent::Fire()
 {
-	if (!ensure(Barrel && ProjectileBlueprint)) { return; }
 	bool bIsReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTime;
 
-	if (bIsReloaded) {
+	if (FiringState != EFiringState::Reloading) {
+		if (!ensure(Barrel)) { return; }
+		if (!ensure(ProjectileBlueprint)) { return; }
 		AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 			ProjectileBlueprint,
 			Barrel->GetSocketLocation(FName("Projectile")),
