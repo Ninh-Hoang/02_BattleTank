@@ -19,6 +19,7 @@ class BATTLETANK_API ACIWSTankController : public AAIController
 	GENERATED_BODY()
 
 private:
+	ACIWSTankController();
 
 	//how close the AI tank auto move to player
 	virtual void BeginPlay() override;

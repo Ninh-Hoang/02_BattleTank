@@ -9,6 +9,9 @@
 
 #define OUT
 
+ACIWSTankController::ACIWSTankController() {
+}
+
 void ACIWSTankController::BeginPlay() {
 	Super::BeginPlay();
 }
@@ -26,17 +29,14 @@ void ACIWSTankController::Tick(float DeltaTime) {
 	);
 	CollisionSphere = GetPawn()->FindComponentByClass<USphereComponent>();
 
-	if (ensure(CollisionSphere)) {
+	if (ensure(CollisionSphere || AimingComponent)) {
 		TArray<AActor*> OverlapActors;
-		TSubclassOf<EObjectTypeQuery> Temp;
 		CollisionSphere->GetOverlappingActors(OUT OverlapActors);
-		for(const AActor* Actor : OverlapActors) {
-			//UE_LOG(LogTemp, Warning, TEXT("%s"), *Actor->GetName());
+		//UE_LOG(LogTemp, Warning, TEXT("%i"), OverlapActors.Num());
+		if (OverlapActors.Num() != 0) {
+			//UE_LOG(LogTemp, Warning, TEXT("%s"), *OverlapActors[0]->GetName());
+			AimingComponent->AimAt(OverlapActors[0]->GetActorLocation());
+			AimingComponent->Fire();
 		}
 	}
-	if (ensure(AimingComponent)) {
-		//UE_LOG(LogTemp, Warning, TEXT("%s"), *AimingComponent->GetName());
-	}
-
 }
-
