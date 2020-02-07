@@ -22,8 +22,6 @@ public:
 	void Intercept();
 
 protected:
-	UPROPERTY(EditAnywhere, Category = Setup)
-	USphereComponent* CollisionSphere;
 };
 
 

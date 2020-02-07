@@ -6,10 +6,4 @@
 
 
 void UTankAimingComponentCIWS::Intercept() {
-	TArray<AActor*> ActorList;
-	CollisionSphere->GetOverlappingActors(ActorList);
-	if (!ensure(CollisionSphere)) { return; }
-	for (AActor* Actor : ActorList) {
-		UE_LOG(LogTemp, Warning, TEXT("%s"), *Actor->GetName());
-	}
 }
