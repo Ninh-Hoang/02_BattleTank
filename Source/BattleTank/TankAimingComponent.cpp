@@ -95,7 +95,6 @@ void UTankAimingComponent::MoveTurret(FVector AimDirection){
 void UTankAimingComponent::Fire()
 {
 	bool bIsReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTime;
-
 	if (FiringState != EFiringState::Reloading) {
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
