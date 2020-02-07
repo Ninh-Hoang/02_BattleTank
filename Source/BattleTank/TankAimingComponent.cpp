@@ -4,6 +4,7 @@
 #include "TankBarrel.h"
 #include "TankTurret.h"
 #include "Projectile.h"
+#include "DrawDebugHelpers.h"
 
 #define OUT
 
@@ -78,6 +79,32 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 	else {
 		//UE_LOG(LogTemp, Warning, TEXT("No solution found"));
 	}
+}
+
+void UTankAimingComponent::Intercept(AActor* Projectile) {
+	if (!ensure(Barrel) || !ensure(Turret)) { return; }
+	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
+	DrawDebugLine(GetWorld(),
+		StartLocation,
+		Projectile->GetActorLocation(),
+		FColor(255, 0, 0),
+		false);
+	FVector Velocity = Projectile->GetVelocity();
+	FVector Prediction = (GetWorld()->GetDeltaSeconds() + .5) * Velocity + Projectile->GetActorLocation();
+	DrawDebugLine(GetWorld(),
+		Projectile->GetActorLocation(),
+		Prediction,
+		FColor(0, 0, 255),
+		false);
+	DrawDebugSphere(
+		GetWorld(),
+		Prediction,
+		100.,
+		12,
+		FColor(255, 0, 0),
+		false
+	);
+	AimAt(Prediction);
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection){

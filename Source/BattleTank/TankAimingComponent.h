@@ -42,7 +42,7 @@ private:
 	float LaunchSpeed = 10000.;
 
 	UPROPERTY(EditAnywhere, Category = Firing)
-	float ReloadTime = 10;
+	float ReloadTime = 2;
 
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
@@ -69,4 +69,6 @@ public:
 	void MoveBarrel(FVector AimDirection);
 
 	void MoveTurret(FVector AimDirection);
+
+	void Intercept(AActor* Projectile);
 };

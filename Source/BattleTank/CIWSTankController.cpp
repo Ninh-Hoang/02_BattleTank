@@ -35,7 +35,8 @@ void ACIWSTankController::Tick(float DeltaTime) {
 		//UE_LOG(LogTemp, Warning, TEXT("%i"), OverlapActors.Num());
 		if (OverlapActors.Num() != 0) {
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *OverlapActors[0]->GetName());
-			AimingComponent->AimAt(OverlapActors[0]->GetActorLocation());
+			AimingComponent->Intercept(OverlapActors[0]);
+			//AimingComponent->AimAt(Prediction);
 			AimingComponent->Fire();
 		}
 	}
