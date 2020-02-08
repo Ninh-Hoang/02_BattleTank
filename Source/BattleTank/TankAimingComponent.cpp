@@ -82,7 +82,8 @@ void UTankAimingComponent::AimAt(FVector HitLocation) {
 }
 
 void UTankAimingComponent::Intercept(AActor* Projectile) {
-	if (!ensure(Barrel) || !ensure(Turret)) { return; }
+	if (!ensure(Barrel) || !ensure(Turret) || !ensure(Projectile)) { return; }
+	IncomingProjectile = Projectile;
 	FVector StartLocation = Barrel->GetSocketLocation(FName("Projectile"));
 	DrawDebugLine(GetWorld(),
 		StartLocation,
@@ -91,7 +92,7 @@ void UTankAimingComponent::Intercept(AActor* Projectile) {
 		false);
 	FVector Velocity = Projectile->GetVelocity();
 	FVector Prediction = (GetWorld()->GetDeltaSeconds() + .5) * Velocity + Projectile->GetActorLocation();
-	DrawDebugLine(GetWorld(),
+	/*DrawDebugLine(GetWorld(),
 		Projectile->GetActorLocation(),
 		Prediction,
 		FColor(0, 0, 255),
@@ -103,8 +104,17 @@ void UTankAimingComponent::Intercept(AActor* Projectile) {
 		12,
 		FColor(255, 0, 0),
 		false
-	);
-	AimAt(Prediction);
+	);*/
+	//AimAt(Prediction);
+}
+
+AActor* UTankAimingComponent::GetProjectile() {
+	if (IncomingProjectile) {
+		return IncomingProjectile;
+	}
+	else {
+		return false;
+	}
 }
 
 void UTankAimingComponent::MoveBarrel(FVector AimDirection){

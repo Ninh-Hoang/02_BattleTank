@@ -44,6 +44,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = Firing)
 	float ReloadTime = 2;
 
+	AActor* IncomingProjectile = nullptr;
+
 	UPROPERTY(EditAnywhere, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
@@ -61,6 +63,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialize(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
+	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = Action)
@@ -71,4 +74,7 @@ public:
 	void MoveTurret(FVector AimDirection);
 
 	void Intercept(AActor* Projectile);
+
+	UFUNCTION(BlueprintCallable, Category = "Setup")
+	AActor* GetProjectile();
 };
