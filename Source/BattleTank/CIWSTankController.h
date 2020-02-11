@@ -27,6 +27,6 @@ private:
 
 	void Tick(float DeltaTime) override;
 
-	//UTankAimingComponent* AimingComponent;
+	UTankAimingComponent* AimingComponent;
 	USphereComponent* CollisionSphere;
 };

@@ -16,7 +16,7 @@ void ACIWSTankController::BeginPlay() {
 
 void ACIWSTankController::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
-	/*AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
 	CollisionSphere = GetPawn()->FindComponentByClass<USphereComponent>();
 	
 	if (ensure(CollisionSphere) || ensure(AimingComponent)) {
@@ -25,18 +25,10 @@ void ACIWSTankController::Tick(float DeltaTime) {
 		//UE_LOG(LogTemp, Warning, TEXT("%i"), OverlapActors.Num());
 		if (OverlapActors.Num() != 0) {
 			//UE_LOG(LogTemp, Warning, TEXT("%s"), *OverlapActors[0]->GetName());
-			AimingComponent->AimAt(OverlapActors[0]->GetActorLocation());
-			//AimingComponent->Intercept(OverlapActors[0]);
+			//AimingComponent->AimAt(OverlapActors[0]->GetActorLocation());
+			AimingComponent->Intercept(OverlapActors[0]);
 			//AimingComponent->AimAt(Prediction);
 			//AimingComponent->Fire();
 		}
-	}*/
-
-	auto PlayerTank = GetWorld()->GetFirstPlayerController()->GetPawn();
-	auto AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
-
-	if (ensure(PlayerTank || AimingComponent)) {
-		AimingComponent->AimAt(PlayerTank->GetActorLocation());
-		AimingComponent->Fire();
 	}
 }
